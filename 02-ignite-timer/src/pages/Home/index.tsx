@@ -27,7 +27,7 @@ const newClycleFormValidationSchema = zod.object({
 type NewCycleFormData = zod.infer<typeof newClycleFormValidationSchema>
 
 export function Home() {
-  const { register, handleSubmit, watch } = useForm<NewCycleFormData>({
+  const { register, handleSubmit, watch, reset } = useForm<NewCycleFormData>({
     resolver: zodResolver(newClycleFormValidationSchema),
     defaultValues: {
       task:'',
@@ -37,6 +37,7 @@ export function Home() {
 
   function handleCreateNewCycle(data: NewCycleFormData) {
     console.log(data)
+    reset() // volta os valores dos campos para os definidos no defaultValues
   }
 
   const task = watch('task')

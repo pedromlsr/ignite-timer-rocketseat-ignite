@@ -24,13 +24,18 @@ const newClycleFormValidationSchema = zod.object({
     .max(60, 'O ciclo precisa ser de no máximo 60 minutos.')
 })
 
+type NewCycleFormData = zod.infer<typeof newClycleFormValidationSchema>
+
 export function Home() {
-  const { register, handleSubmit, watch } = useForm({
-    resolver: zodResolver(newClycleFormValidationSchema)
+  const { register, handleSubmit, watch } = useForm<NewCycleFormData>({
+    resolver: zodResolver(newClycleFormValidationSchema),
+    defaultValues: {
+      task:'',
+      minutesAmount: 0
+    }
   })
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function handleCreateNewCycle(data: any) {
+  function handleCreateNewCycle(data: NewCycleFormData) {
     console.log(data)
   }
 

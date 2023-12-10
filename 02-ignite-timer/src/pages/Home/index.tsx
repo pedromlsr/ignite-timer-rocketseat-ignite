@@ -1,4 +1,8 @@
 import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+
+// importado desta forma porque a lib do zod não tem nenhum export default
+import * as zod from 'zod'
 
 import { 
   CountdownContainer, 
@@ -12,18 +16,18 @@ import {
 
 import { Play } from "phosphor-react";
 
-// controlled x uncontrolled
-
-// function register(name: string) {
-//   return {
-//     onChange: () => void,
-//     onBlur: () => void,
-//     onFocus: () => void   
-//   }
-// }
+const newClycleFormValidationSchema = zod.object({
+  task: zod.string().min(1, 'Informe a tarefa'),
+  minutesAmount: zod
+    .number()
+    .min(5, 'O ciclo precisa ser de no mínimo 5 minutos.')
+    .max(60, 'O ciclo precisa ser de no máximo 60 minutos.')
+})
 
 export function Home() {
-  const { register, handleSubmit, watch } = useForm()
+  const { register, handleSubmit, watch } = useForm({
+    resolver: zodResolver(newClycleFormValidationSchema)
+  })
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function handleCreateNewCycle(data: any) {
